@@ -8,10 +8,10 @@
 #include <re_types.h>
 #if defined(USE_OPENSSL)
 #include <openssl/sha.h>
-#elif defined (__APPLE__)
-#include <CommonCrypto/CommonDigest.h>
 #elif defined (USE_MBEDTLS)
 #include <mbedtls/md.h>
+#elif defined (__APPLE__)
+#include <CommonCrypto/CommonDigest.h>
 #endif
 #include <re_sha.h>
 
