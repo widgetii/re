@@ -14,6 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     strategy:
+      fail-fast: false
       matrix:
         compiler: [gcc, clang]
         os: [ubuntu-18.04, ubuntu-20.04, ubuntu-22.04, macos-11, macos-12]
