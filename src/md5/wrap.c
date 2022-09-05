@@ -41,7 +41,11 @@ void md5(const uint8_t *d, size_t n, uint8_t *md)
 	(void)MD5(d, n, md);
 #endif
 #elif defined(USE_MBEDTLS)
+#if MBEDTLS_VERSION_NUMBER >=  0x02070000
+	mbedtls_md5_ret(d, n, md);
+#else
 	mbedtls_md5(d, n, md);
+#endif
 #else
 #error missing MD5 backend
 #endif

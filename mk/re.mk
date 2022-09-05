@@ -468,7 +468,13 @@ CFLAGS  += -I$(OPENSSL_OPT)/include
 LFLAGS  += -L$(OPENSSL_OPT)/lib
 endif
 
+# Set USE_OPENSSL=no to disable OpenSSL support even if library present
+# Leave it empty to test support on target platform
+ifeq ($(USE_OPENSSL),no)
+USE_OPENSSL :=
+else
 USE_OPENSSL := $(shell $(call CC_TEST,openssl/ssl.h))
+endif
 
 ifneq ($(USE_OPENSSL),)
 CFLAGS  += -DUSE_OPENSSL -DUSE_TLS
@@ -490,6 +496,16 @@ endif
 
 USE_OPENSSL_AES		:= yes
 USE_OPENSSL_HMAC	:= yes
+
+else
+
+ifneq ($(USE_MBEDTLS),no)
+USE_MBEDTLS := $(shell $(call CC_TEST,mbedtls/ssl.h))
+ifneq ($(USE_MBEDTLS),)
+CFLAGS  += -DUSE_MBEDTLS
+LIBS    += -lmbedcrypto
+endif
+endif
 
 endif
 
@@ -699,6 +715,7 @@ info::
 	@echo "  USE_TLS:       $(USE_TLS)"
 	@echo "  USE_DTLS:      $(USE_DTLS)"
 	@echo "  USE_DTLS_SRTP: $(USE_DTLS_SRTP)"
+	@echo "  USE_MBEDTLS:   $(USE_MBEDTLS)"
 	@echo "  USE_ZLIB:      $(USE_ZLIB)"
 	@echo "  GCOV:          $(GCOV)"
 	@echo "  GPROF:         $(GPROF)"
