@@ -39,7 +39,7 @@ jobs:
           fi
         else
           if [[ "${{ matrix.crypto }}" == "MBEDTLS" ]]; then
-            apt update && apt install -y libmbedtls-dev
+            sudo apt update && sudo apt install -y libmbedtls-dev
           fi
         fi
 
