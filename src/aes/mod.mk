@@ -6,6 +6,8 @@
 
 ifneq ($(USE_OPENSSL_AES),)
 SRCS	+= aes/openssl/aes.c
+else ifneq ($(USE_MBEDTLS_AES),)
+SRCS	+= aes/mbedtls/aes.c
 else ifneq ($(USE_APPLE_COMMONCRYPTO),)
 SRCS	+= aes/apple/aes.c
 else

@@ -64,11 +64,6 @@ jobs:
 
     - name: make
       run: |
-        if [[ "${{ matrix.crypto }}" == "OPENSSL" ]]; then
-          ARGS="-DUSE_OPENSSL=ON -DUSE_MBEDTLS=OFF"
-        else
-          ARGS="-DUSE_OPENSSL=OFF -DUSE_MBEDTLS=ON"
-        fi
         make EXTRA_CFLAGS=-Werror CCACHE=
 
     - name: cmake

@@ -504,6 +504,8 @@ USE_MBEDTLS := $(shell $(call CC_TEST,mbedtls/ssl.h))
 ifneq ($(USE_MBEDTLS),)
 CFLAGS  += -DUSE_MBEDTLS
 LIBS    += -lmbedcrypto
+USE_MBEDTLS_AES		:= yes
+USE_MBEDTLS_HMAC	:= yes
 endif
 endif
 
