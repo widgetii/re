@@ -40,6 +40,8 @@ void hmac_sha1(const uint8_t *k,  /* secret key */
 	       uint8_t *out,      /* output buffer, at least "t" bytes */
 	       size_t   t)
 {
+	(void)t;
+
 #if defined (USE_OPENSSL)
 	if (!HMAC(EVP_sha1(), k, (int)lk, d, ld, out, NULL))
 		ERR_clear_error();
