@@ -206,6 +206,7 @@ int aes_encr(struct aes *aes, uint8_t *out, const uint8_t *in, size_t len)
 			if (mbedtls_gcm_update(&aes->gcm.ctx, in, len, out,
 						len, &output_length))
 #else
+			(void)output_length;
 			if (mbedtls_gcm_update(&aes->gcm.ctx, len, in, out))
 #endif
 				return EPROTO;
@@ -247,6 +248,7 @@ int aes_decr(struct aes *aes, uint8_t *out, const uint8_t *in, size_t len)
 			if (mbedtls_gcm_update(&aes->gcm.ctx, in, len, out,
 						len, &output_length))
 #else
+			(void)output_length;
 			if (mbedtls_gcm_update(&aes->gcm.ctx, len, in, out))
 #endif
 				return EPROTO;
@@ -283,6 +285,7 @@ int aes_get_authtag(struct aes *aes, uint8_t *tag, size_t taglen)
 		if (mbedtls_gcm_finish(&aes->gcm.ctx, NULL, 0, &output_length,
 					tag, taglen))
 #else
+		(void)output_length;
 		if (mbedtls_gcm_finish(&aes->gcm.ctx, tag, taglen))
 #endif
 			return EPROTO;
@@ -319,6 +322,7 @@ int aes_authenticate(struct aes *aes, const uint8_t *tag, size_t taglen)
 		if (mbedtls_gcm_finish(&aes->gcm.ctx, NULL, 0, &output_length,
 			check_tag, taglen))
 #else
+		(void)output_length;
 		if (mbedtls_gcm_finish(&aes->gcm.ctx, check_tag, taglen))
 #endif
 			return EPROTO;
