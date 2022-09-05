@@ -31,6 +31,7 @@ jobs:
 
     - name: install deps
       run: |
+        set -x
         if [[ "{{ runner.os }}" == "macOS" ]]; then
           if [[ "${{ matrix.crypto }}" == "OPENSSL" ]]; then
             echo "OPENSSL_ROOT_DIR=/usr/local/opt/openssl" >> $GITHUB_ENV
