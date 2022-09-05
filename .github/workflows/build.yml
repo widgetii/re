@@ -16,6 +16,7 @@ jobs:
       matrix:
         compiler: [gcc, clang]
         os: [ubuntu-18.04, ubuntu-20.04, ubuntu-22.04, macos-11, macos-12]
+        crypto: [OPENSSL, MBEDTLS]
         exclude:
           - os: macos-11
             compiler: gcc
@@ -27,10 +28,27 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: openssl path macos
-      if: ${{ runner.os == 'macOS' }}
+    - name: install deps
       run: |
-        echo "OPENSSL_ROOT_DIR=/usr/local/opt/openssl" >> $GITHUB_ENV
+        if [[ "{{ runner.os }}" == "macOS" ]]; then
+          if [[ "${{ matrix.crypto }}" == "OPENSSL" ]]; then
+            echo "OPENSSL_ROOT_DIR=/usr/local/opt/openssl" >> $GITHUB_ENV
+          else
+            brew install mbedtls
+          fi
+        else
+          if [[ "${{ matrix.crypto }}" == "MBEDTLS" ]]; then
+            apt update && apt install -y libmbedtls-dev
+          fi
+        fi
+
+        if [[ "${{ matrix.crypto }}" == "OPENSSL" ]]; then
+          echo "USE_OPENSSL=yes" >> $GITHUB_ENV
+          echo "USE_MBEDTLS=no" >> $GITHUB_ENV
+        else
+          echo "USE_OPENSSL=no" >> $GITHUB_ENV
+          echo "USE_MBEDTLS=yes" >> $GITHUB_ENV
+        fi
 
     - name: make info
       run: |
@@ -44,13 +62,19 @@ jobs:
       run: make -C mk -f test.mk
 
     - name: make
-      run: make EXTRA_CFLAGS=-Werror CCACHE=
+      run: |
+        if [[ "${{ matrix.crypto }}" == "OPENSSL" ]]; then
+          ARGS="-DUSE_OPENSSL=ON -DUSE_MBEDTLS=OFF"
+        else
+          ARGS="-DUSE_OPENSSL=OFF -DUSE_MBEDTLS=ON"
+        fi
+        make EXTRA_CFLAGS=-Werror CCACHE=
 
     - name: cmake
       run: |
         make cmake
         cmake --install build --prefix dist
-    
+
     - uses: sreimers/pr-dependency-action@v0.5
       with:
         name: rem
