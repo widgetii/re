@@ -37,6 +37,7 @@ jobs:
             echo "OPENSSL_ROOT_DIR=/usr/local/opt/openssl" >> $GITHUB_ENV
           else
             brew install mbedtls
+            echo "LDFLAGS=-L/usr/local/opt/mbedtls/lib" >> $GITHUB_ENV
           fi
         else
           if [[ "${{ matrix.crypto }}" == "MBEDTLS" ]]; then
