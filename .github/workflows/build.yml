@@ -38,6 +38,7 @@ jobs:
           else
             brew install mbedtls
             echo "LDFLAGS=-L/usr/local/opt/mbedtls/lib" >> $GITHUB_ENV
+            cat /usr/local/opt/mbedtls/md5.h
           fi
         else
           if [[ "${{ matrix.crypto }}" == "MBEDTLS" ]]; then
