@@ -47,10 +47,10 @@ void md5(const uint8_t *d, size_t n, uint8_t *md)
 	mbedtls_md5(d, n, md);
 #endif
 #else
-#error missing MD5 backend
 	(void)d;
 	(void)n;
 	(void)md;
+#error missing MD5 backend
 #endif
 }
 
