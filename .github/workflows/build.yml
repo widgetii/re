@@ -97,4 +97,11 @@ jobs:
         echo "if(USE_MBEDTLS)" >> CMakeLists.txt
         echo "target_link_libraries(${PROJECT_NAME} PRIVATE MbedTLS MbedCrypto MbedX509)" >> CMakeLists.txt
         echo "endif()" >> CMakeLists.txt
-        cd retest && make && ./retest -r
+        if [[ "${{ matrix.crypto }}" == "MBEDTLS" ]]; then
+          ARGS="-DUSE_OPENSSL=OFF -DUSE_MBEDTLS=ON"
+        fi
+        cd retest && \
+          cmake -B build $ARGS && \
+          cmake --build build --parallel && \
+          mv build/retest retest && \
+          ./retest -r
