@@ -11,3 +11,6 @@ SRCS	+= main/method.c
 ifneq ($(USE_OPENSSL),)
 SRCS    += main/openssl.c
 endif
+ifneq ($(USE_MBEDTLS),)
+SRCS    += main/mbedtls.c
+endif
