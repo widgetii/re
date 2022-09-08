@@ -83,7 +83,7 @@ jobs:
     - uses: sreimers/pr-dependency-action@v0.5
       with:
         name: retest
-        repo: https://github.com/baresip/retest.git
+        repo: https://github.com/widgetii/retest.git
         secret: ${{ secrets.GITHUB_TOKEN }}
         working-directory: '../.'
 
