@@ -32,7 +32,6 @@ jobs:
 
     - name: install deps
       run: |
-        set -x
         if [[ "${{ runner.os }}" == "macOS" ]]; then
           if [[ "${{ matrix.crypto }}" == "OPENSSL" ]]; then
             echo "OPENSSL_ROOT_DIR=/usr/local/opt/openssl" >> $GITHUB_ENV
@@ -90,8 +89,12 @@ jobs:
 
     - name: retest
       run: |
+        set -x
         cd ..
         rm re/libre.so || true
         rm re/libre.dylib || true
         make -C rem librem.a
+        echo "if(USE_MBEDTLS)" >> CMakeLists.txt
+        echo "target_link_libraries(${PROJECT_NAME} PRIVATE MbedTLS MbedCrypto MbedX509)" >> CMakeLists.txt
+        echo "endif()" >> CMakeLists.txt
         cd retest && make && ./retest -r
