@@ -95,6 +95,7 @@ jobs:
         rm re/libre.dylib || true
         make -C rem librem.a
         echo "if(USE_MBEDTLS)" >> CMakeLists.txt
+        echo "find_package(MbedTLS REQUIRED)" >> CMakeLists.txt
         echo "target_link_libraries(${PROJECT_NAME} PRIVATE MbedTLS MbedCrypto MbedX509)" >> CMakeLists.txt
         echo "endif()" >> CMakeLists.txt
         if [[ "${{ matrix.crypto }}" == "MBEDTLS" ]]; then
